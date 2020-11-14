@@ -25,6 +25,10 @@ g = pretty( c ) ;
 print(g) ;
 """
 
+
+######################
+## SOME BS SETTINGS ##
+
 scr = cs.initscr() ;
 
 # colurs for buttons and everything
@@ -88,6 +92,10 @@ n = 0 ;
 
 end = False ;
 
+
+##################
+## FIRST SCREEN ##
+
 while True:
 
 	key = fun.getch() ;
@@ -95,10 +103,12 @@ while True:
 	if key == 27:
 		break ;
 
+
 	elif key == cs.KEY_LEFT:
 		if cx > 0:
 			cx = cx - 1 ;
 			fun.move(cy, cx) ;
+
 	
 	elif key == cs.KEY_UP:
 		if butt_sel > 0:
@@ -110,19 +120,33 @@ while True:
 				scr.addstr( 3, fw + 3, buttons[1], cs.color_pair(5) ) ;
 				scr.addstr( height - 3, fw + 3, buttons[butt_num - 1], cs.color_pair(4) ) ;
 	
-
 			butt_sel = butt_sel - 1 ;
 
 			fun.move(cy, cx) ;
 			scr.refresh() ;			
 
+
 	elif key == cs.KEY_DOWN:
-		pass ;
+		if butt_sel < butt_num - 1:
+			if butt_sel == 0:
+				scr.addstr( 3, fw + 3, buttons[1], cs.color_pair(5) ) ;
+				scr.addstr( 1, fw + 10, buttons[0], cs.color_pair(4) ) ;
+
+			elif butt_sel == butt_num - 2: 
+				scr.addstr( 3, fw + 3, buttons[1], cs.color_pair(4) ) ;
+				scr.addstr( height - 3, fw + 3, buttons[butt_num - 1], cs.color_pair(5) ) ;
+	
+			butt_sel = butt_sel + 1 ;
+
+			fun.move(cy, cx) ;
+			scr.refresh() ;			
+
 
 	elif key == cs.KEY_RIGHT:
 		if cx < n:
 			cx = cx + 1 ;
 			fun.move(cy, cx) ;
+
 
 	elif key == 127:
 		if cx > 0:
@@ -131,28 +155,36 @@ while True:
 			fun.delch(cy, cx) ;
 			n = n - 1 ;
 
+
 	elif key == 10:
-		if butt_num == 0:
+
+		if butt_sel == 0:
 			end = True ;
 			break ;
 
-		check.clear() ;
+		elif butt_sel == 1:
 
-		g = str( fun.instr(0, 0, n) ) ;
+			check.clear() ;
 
-		try:		
-			f = sympify(g[2:-1]) ;
-			s = pretty(f) ;
+			g = str( fun.instr(0, 0, n) ) ;
 
-		except Exception as err:
-			s = "Error!\n\n" ;
-			s = s + str(err) ;
+			try:		
+				f = sympify(g[2:-1]) ;
+				s = pretty(f) ;
 
-		check.move(0, 0) ;
-		check.addstr(s) ;
+			except Exception as err:
+				s = "Error!\n\n" ;
+				s = s + str(err) ;
 
-		check.refresh() ;
-		fun.move(cy, cx) ;
+			check.move(0, 0) ;
+			check.addstr(s) ;
+
+			check.refresh() ;
+			fun.move(cy, cx) ;
+
+		elif butt_sel == butt_num - 1:
+			break ;
+
 
 	else:
 		if cx < (fw - 3) and n < (fw - 3):
@@ -164,7 +196,19 @@ while True:
 			n = n + 1 ;
 
 
+###################
+## SECOND SCREEN ##
+
 
 cs.endwin() ;
+
+
+
+
+
+
+
+
+
 
 
